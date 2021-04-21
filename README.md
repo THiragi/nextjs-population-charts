@@ -1,9 +1,5 @@
-個人的なNext.jsプロジェクトのボイラープレートです。
-まだまだ試行錯誤中。
+# Nextjs-Population-Charts
 
-# Using Built
+[RESAS API](https://opendata.resas-portal.go.jp/)から取得した都道府県別の総人口推移をグラフで表示するアプリです。
 
-- [Next.js(TypeScript)](https://nextjs.org/)
-- eslint
-- prettier
-- jest
+[THiragi/next-ts](https://github.com/THiragi/next-ts)をボイラープレートとして使用しました。
