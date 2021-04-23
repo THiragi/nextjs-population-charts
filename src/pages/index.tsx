@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 
 import { InferGetServerSidePropsType, NextPage } from 'next';
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+
 import { getAllPrefectures } from '../lib/fetcher';
 
 import { Composition } from '../types/population';
@@ -27,6 +39,8 @@ const Home: NextPage<PageProps> = ({ result }) => {
               data: json.data,
             },
           ]);
+          // fetchがエラーだった場合の処理も必要。
+
           setChartData(increasedData);
         });
     } else {
@@ -41,7 +55,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
   return (
     <div>
       <h1>都道府県一覧</h1>
-      <ul>
+      <ul style={{ display: 'flex', width: '700px', listStyle: 'none' }}>
         {result.map((data) => (
           <li key={data.prefCode}>
             <label htmlFor={`pref-${data.prefCode}`}>
@@ -56,12 +70,30 @@ const Home: NextPage<PageProps> = ({ result }) => {
           </li>
         ))}
       </ul>
-      {/* ここから以下は後ほど、グラフに置き換えます */}
-      <ul>
-        {chartData.length &&
-          chartData.map((data) => <li key={data.label}>{data.label}</li>)}
-      </ul>
-      {/* ここまで */}
+      <div style={{ width: '700px', height: '400px', margin: '0 auto' }}>
+        <ResponsiveContainer width="80%">
+          <LineChart>
+            <XAxis
+              dataKey="year"
+              type="category"
+              allowDuplicatedCategory={false}
+            />
+            <YAxis dataKey="value" />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <Tooltip />
+            <Legend />
+            {chartData.length &&
+              chartData.map((c) => (
+                <Line
+                  dataKey="value"
+                  data={c.data}
+                  name={c.label}
+                  key={c.label}
+                />
+              ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
