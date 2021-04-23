@@ -3,5 +3,5 @@
  */
 export type ResasApiResult<T> = {
   message?: string;
-  result: T[];
+  result: T;
 };
