@@ -23,18 +23,16 @@ export const getAllPrefectures = async (): Promise<PrefectureResponse> => {
 };
 
 /**
- * RESAS APIより引数に渡された都道府県コードの都道府県の人口構成データを取得します。
+ * RESAS APIより引数に渡された都道府県毎の人口構成データを取得します。
  *
- * @param {number} prefCode 都道府県コード
- * @param {number | '-'} cityCode 市区町村コード (※デフォルトでは県内市区町村すべてを指定)
+ * @param {string} prefCode 都道府県コード
  * @returns {Promise<PopulationResponse>}
  */
 export const getPopulationByPrefecture = async (
-  prefCode: number,
-  cityCode: number | '-' = '-',
+  prefCode: string,
 ): Promise<PopulationResponse> => {
   const result: Promise<PopulationResponse> = await fetch(
-    `${process.env.RESAS_API_ENDPOINT}population/composition/perYear?cityCode=${cityCode}&prefCode=${prefCode}`,
+    `${process.env.RESAS_API_ENDPOINT}population/composition/perYear?cityCode=-&prefCode=${prefCode}`,
     requestHeaders,
   ).then((res) => res.json());
 
