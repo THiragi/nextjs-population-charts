@@ -1,9 +1,4 @@
-import { ResasApiResult } from './api';
-
-/**
- * RESAS API `人口構成(api/v1/population/composition/perYear)`からのレスポンス
- */
-export type PopulationResponse = ResasApiResult<Population>;
+// 参考元: https://opendata.resas-portal.go.jp/docs/api/v1/population/composition/perYear.html
 
 /**
  * 人口構成データ

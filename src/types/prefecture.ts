@@ -1,9 +1,4 @@
-import { ResasApiResult } from './api';
-
-/**
- * RESAS API `都道府県一覧(api/v1/prefectures)`からのレスポンス
- */
-export type PrefectureResponse = ResasApiResult<Prefecture[]>;
+// 参考元: https://opendata.resas-portal.go.jp/docs/api/v1/prefectures.html
 
 /**
  * 都道府県データ

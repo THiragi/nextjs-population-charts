@@ -16,9 +16,11 @@
     "lint:style": "stylelint 'src/**/*.{css,less,sass,scss}'",
     "lint:style:fix": "stylelint --fix 'src/**/*.{css,less,sass,scss}'",
     "postinstall": "typesync",
-    "test": "jest"
+    "test": "jest",
+    "api:build": "aspida"
   },
   "dependencies": {
+    "@aspida/fetch": "^1.7.0",
     "next": "^10.1.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
