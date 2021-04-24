@@ -13,14 +13,14 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-import { getAllPrefectures } from '../lib/fetcher';
-
+import client from '../lib/api';
 import { Composition } from '../types/population';
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const Home: NextPage<PageProps> = ({ result }) => {
+  // rechartsへ渡すチャードデータの配列
   const [chartData, setChartData] = useState<Composition[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +100,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
 // リクエスト時に都道府県一覧データを取得
 export const getServerSideProps = async () => {
-  const { result } = await getAllPrefectures();
+  const { result } = await client.v1.prefectures.$get();
 
   return {
     props: {

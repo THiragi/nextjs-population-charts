@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getPopulationByPrefecture } from '../../lib/fetcher';
+import client from '../../lib/api';
 
 // API_KEYを秘匿したいので、Next.jsのAPIルート経由で人口データを取得する
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
   // `prefCode`が存在しない場合は404エラー
   if (!req.query.prefCode) return res.status(404).end();
 
@@ -17,7 +20,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
    * prefCodeが都道府県コードに含まれているかチェックした方が安全
    */
 
-  const { result } = await getPopulationByPrefecture(prefCode);
+  const { result } = await client.v1.population.composition.perYear.$get({
+    query: {
+      cityCode: '-',
+      prefCode: parseInt(prefCode, 10),
+    },
+  });
   // 取得した人口推移データのうち`label`が`総人口`の物のみを抽出
   const total = result.data.filter(
     (composition) => composition.label === '総人口',
