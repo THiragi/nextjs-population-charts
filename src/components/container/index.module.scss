@@ -1,0 +1,11 @@
+.container {
+  main {
+    max-width: var(--max-width);
+    padding: 0 32px;
+    margin: 0 auto;
+
+    h1 {
+      color: var(--color-heading);
+    }
+  }
+}

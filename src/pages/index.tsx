@@ -2,24 +2,14 @@ import React, { useState } from 'react';
 
 import { InferGetServerSidePropsType, NextPage } from 'next';
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import Chart from '../components/chart';
+import CheckList from '../components/checkList';
+import Container from '../components/container';
+import FailureAlert from '../components/failureAlert';
 
 import client from '../lib/api';
-import assignColorCode from '../lib/assignColorCode';
 import { ChartData } from '../types/chart';
 import { Prefecture } from '../types/prefecture';
-
-// 都道府県グラフの配色の配列
-const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 210, 50));
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -75,59 +65,17 @@ const Home: NextPage<PageProps> = ({ result }) => {
   };
 
   return (
-    <div>
-      <h1>都道府県一覧</h1>
-      {failures.length !== 0 && (
-        <div>
-          <h3>以下の都道府県のデータの取得に失敗しています</h3>
-          <ul>
-            {failures.map((failure) => (
-              <li key={failure.prefCode}>{failure.prefName}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <ul style={{ display: 'flex', width: '700px', listStyle: 'none' }}>
-        {result.map((data) => (
-          <li key={data.prefCode}>
-            <label htmlFor={`pref-${data.prefCode}`}>
-              <input
-                id={`pref-${data.prefCode}`}
-                type="checkbox"
-                value={`${data.prefCode}:${data.prefName}`}
-                onChange={handleCheck}
-              />
-              {data.prefName}
-            </label>
-          </li>
-        ))}
-      </ul>
-      <div style={{ width: '700px', height: '400px', margin: '0 auto' }}>
-        <ResponsiveContainer width="80%">
-          <LineChart>
-            <XAxis
-              dataKey="year"
-              type="category"
-              allowDuplicatedCategory={false}
-            />
-            <YAxis dataKey="value" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Tooltip />
-            <Legend />
-            {chartData.length &&
-              chartData.map((c) => (
-                <Line
-                  dataKey="value"
-                  data={c.data}
-                  name={c.label}
-                  key={c.label}
-                  stroke={colorCode[c.id]}
-                />
-              ))}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    <Container
+      title="都道府県別人口推移チャート"
+      description="チェックを入れた都道府県の人口推移がチャートで表示されます"
+    >
+      <section>
+        <h1>都道府県一覧</h1>
+        {failures.length !== 0 && <FailureAlert failures={failures} />}
+        <CheckList result={result} handleCheck={handleCheck} />
+        <Chart chartData={chartData} />
+      </section>
+    </Container>
   );
 };
 
