@@ -14,14 +14,18 @@ import {
 } from 'recharts';
 
 import client from '../lib/api';
-import { Composition } from '../types/population';
+import assignColorCode from '../lib/assignColorCode';
+import { ChartData } from '../types/chart';
+
+// 都道府県グラフの配色の配列
+const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 240, 80));
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すチャードデータの配列
-  const [chartData, setChartData] = useState<Composition[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.currentTarget;
@@ -35,12 +39,11 @@ const Home: NextPage<PageProps> = ({ result }) => {
         .then((json) => {
           const increasedData = chartData.concat([
             {
+              id: parseInt(prefCode, 10),
               label: prefName,
               data: json.data,
             },
           ]);
-          // fetchがエラーだった場合の処理も必要。
-
           setChartData(increasedData);
         });
     } else {
@@ -89,6 +92,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
                   data={c.data}
                   name={c.label}
                   key={c.label}
+                  stroke={colorCode[c.id]}
                 />
               ))}
           </LineChart>
