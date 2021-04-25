@@ -26,6 +26,7 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すチャードデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [failures, setFailures] = useState<string[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.currentTarget;
@@ -33,9 +34,18 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
     // クリックしたチェックボックスの状態によって処理を振り分ける
     if (selected.checked) {
+      if (failures.includes(prefName)) {
+        setFailures(failures.filter((failure) => failure !== prefName));
+      }
       // チェックが入った場合は、APIから人口推移データを取得し、追加する
       await fetch(`/api/population?prefCode=${prefCode}`)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`${res.status}: ${res.statusText}`);
+          }
+
+          return res.json();
+        })
         .then((json) => {
           const increasedData = chartData.concat([
             {
@@ -45,6 +55,9 @@ const Home: NextPage<PageProps> = ({ result }) => {
             },
           ]);
           setChartData(increasedData);
+        })
+        .catch(() => {
+          setFailures([...failures, prefName]);
         });
     } else {
       // チェックが外れた場合、その都道府県の人口推移データを削除する
@@ -58,6 +71,16 @@ const Home: NextPage<PageProps> = ({ result }) => {
   return (
     <div>
       <h1>都道府県一覧</h1>
+      {failures.length !== 0 && (
+        <div>
+          <h3>以下の都道府県のデータの取得に失敗しています</h3>
+          <ul>
+            {failures.map((failure) => (
+              <li key={failure}>{failure}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <ul style={{ display: 'flex', width: '700px', listStyle: 'none' }}>
         {result.map((data) => (
           <li key={data.prefCode}>
