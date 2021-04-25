@@ -14,7 +14,7 @@ export default async (
   const prefCode = toNumber(req.query.prefCode);
 
   // 変換した`prefCode`が整数ではない場合は404エラー
-  if (Number.isInteger(prefCode)) return res.status(404).end();
+  if (!Number.isInteger(prefCode)) return res.status(404).end();
   // `prefCode`の値が都道府県コードに含まれない数字の場合は404エラー
   if (prefCode === 0 || prefCode > 47) return res.status(404).end();
 
