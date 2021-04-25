@@ -18,7 +18,7 @@ import assignColorCode from '../lib/assignColorCode';
 import { ChartData } from '../types/chart';
 
 // 都道府県グラフの配色の配列
-const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 240, 80));
+const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 210, 50));
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
