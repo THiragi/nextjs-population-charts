@@ -16,6 +16,7 @@ import {
 import client from '../lib/api';
 import assignColorCode from '../lib/assignColorCode';
 import { ChartData } from '../types/chart';
+import { Prefecture } from '../types/prefecture';
 
 // 都道府県グラフの配色の配列
 const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 210, 50));
@@ -27,17 +28,21 @@ const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すチャードデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
   // データ取得に失敗した都道府県の配列
-  const [failures, setFailures] = useState<string[]>([]);
+  const [failures, setFailures] = useState<Prefecture[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.currentTarget;
     const [prefCode, prefName] = selected.value.split(':');
 
+    const prefCodeNumber = parseInt(prefCode, 10);
+
     // クリックしたチェックボックスの状態によって処理を振り分ける
     if (selected.checked) {
       // 選択した都道府県が前回データ取得に失敗していた場合、一旦失敗リストから削除
-      if (failures.includes(prefName)) {
-        setFailures(failures.filter((failure) => failure !== prefName));
+      if (failures.find((failure) => failure.prefName === prefName)) {
+        setFailures(
+          failures.filter((failure) => failure.prefName !== prefName),
+        );
       }
       // チェックが入った場合は、APIから人口推移データを取得し、追加する
       await fetch(`/api/population?prefCode=${prefCode}`)
@@ -50,25 +55,22 @@ const Home: NextPage<PageProps> = ({ result }) => {
         })
         .then((json) => {
           // 取得したデータをrechartsのグラフコンポーネントに渡すデータ配列に追加
-          const increasedData = chartData.concat([
+          setChartData([
+            ...chartData,
             {
-              id: parseInt(prefCode, 10),
+              id: prefCodeNumber,
               label: prefName,
               data: json.data,
             },
           ]);
-          setChartData(increasedData);
         })
         .catch(() => {
           // データ取得に失敗した場合、都道府県を失敗リストへ追加
-          setFailures([...failures, prefName]);
+          setFailures([...failures, { prefCode: prefCodeNumber, prefName }]);
         });
     } else {
       // チェックが外れた場合、その都道府県の人口推移データを削除する
-      const reducedData = chartData.filter(
-        (composition) => composition.label !== prefName,
-      );
-      setChartData(reducedData);
+      setChartData(chartData.filter((pref) => pref.label !== prefName));
     }
   };
 
@@ -80,7 +82,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
           <h3>以下の都道府県のデータの取得に失敗しています</h3>
           <ul>
             {failures.map((failure) => (
-              <li key={failure}>{failure}</li>
+              <li key={failure.prefCode}>{failure.prefName}</li>
             ))}
           </ul>
         </div>
