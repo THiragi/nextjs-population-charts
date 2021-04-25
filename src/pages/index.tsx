@@ -26,6 +26,7 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すチャードデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  // データ取得に失敗した都道府県の配列
   const [failures, setFailures] = useState<string[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +35,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
     // クリックしたチェックボックスの状態によって処理を振り分ける
     if (selected.checked) {
+      // 選択した都道府県が前回データ取得に失敗していた場合、一旦失敗リストから削除
       if (failures.includes(prefName)) {
         setFailures(failures.filter((failure) => failure !== prefName));
       }
@@ -47,6 +49,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
           return res.json();
         })
         .then((json) => {
+          // 取得したデータをrechartsのグラフコンポーネントに渡すデータ配列に追加
           const increasedData = chartData.concat([
             {
               id: parseInt(prefCode, 10),
@@ -57,6 +60,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
           setChartData(increasedData);
         })
         .catch(() => {
+          // データ取得に失敗した場合、都道府県を失敗リストへ追加
           setFailures([...failures, prefName]);
         });
     } else {
