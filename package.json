@@ -25,7 +25,8 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "recharts": "^2.0.9",
-    "sass": "^1.32.11"
+    "sass": "^1.32.11",
+    "stylelint-scss": "^3.19.0"
   },
   "devDependencies": {
     "@types/eslint": "^7.2.6",
