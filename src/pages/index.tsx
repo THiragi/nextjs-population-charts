@@ -10,7 +10,7 @@ import { ChartData } from '../types/chart';
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const Home: NextPage<PageProps> = ({ result }) => {
-  // rechartsへ渡すチャートデータの配列
+  // rechartsへ渡すグラフデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
   // データ取得に失敗した都道府県の配列
   const [failures, setFailures] = useState<number[]>([]);
@@ -60,8 +60,8 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
   return (
     <Container
-      title="都道府県別人口推移チャート"
-      description="チェックを入れた都道府県の人口推移がチャートで表示されます"
+      title="都道府県別人口推移グラフ"
+      description="チェックを入れた都道府県の人口推移がグラフで表示されます"
     >
       <section>
         <h2>都道府県一覧</h2>
