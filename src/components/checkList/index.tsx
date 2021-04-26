@@ -19,7 +19,7 @@ const CheckList: React.VFC<Props> = ({ result, failures, handleCheck }) => (
       {result.map((data) => (
         <li
           key={data.prefCode}
-          className={failures.includes(data.prefCode) && styles.failure}
+          className={failures.includes(data.prefCode) ? styles.failure : ''}
         >
           <label htmlFor={`pref-${data.prefCode}`}>
             <input
