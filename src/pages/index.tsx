@@ -17,6 +17,10 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.currentTarget; // クリックされた要素
+
+    // 一連の処理が終了するまで、チェックボックスを一旦無効化しておく
+    selected.disabled = true;
+
     const [prefCode, prefName] = selected.value.split(':'); // valueから都道府県コードと名前を取得
     const prefCodeNumber = parseInt(prefCode, 10); // 都道府県コードをnumber型に変換
 
@@ -56,6 +60,8 @@ const Home: NextPage<PageProps> = ({ result }) => {
       // チェックが外れた場合、その都道府県の人口推移データを削除する
       setChartData(chartData.filter((pref) => pref.label !== prefName));
     }
+    // チェックボックスを有効化
+    selected.disabled = false;
   };
 
   return (
