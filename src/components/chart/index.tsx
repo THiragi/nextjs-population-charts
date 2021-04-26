@@ -15,7 +15,7 @@ import { ChartData } from '../../types/chart';
 import styles from './index.module.scss';
 
 // 都道府県グラフの配色の配列
-const assignColorCodeByValue = assignColorCode(210)(50)(48);
+const assignColorCodeByValue = assignColorCode(190)(50)(48);
 const colorCode = [...Array(48)].map((_, i) => assignColorCodeByValue(i));
 
 type Props = {
@@ -26,7 +26,7 @@ const Chart: React.VFC<Props> = ({ chartData }) => (
   <div className={styles.outer}>
     <div className={styles.chart}>
       <ResponsiveContainer>
-        <LineChart margin={{ top: 50, left: 0, bottom: 30, right: 0 }}>
+        <LineChart margin={{ top: 70, left: 0, bottom: 30, right: 0 }}>
           <XAxis dataKey="year" type="category" allowDuplicatedCategory={false}>
             <Label value="年度" offset={35} position="right" />
           </XAxis>
