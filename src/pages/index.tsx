@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-
 import { InferGetServerSidePropsType, NextPage } from 'next';
-
 import Chart from '../components/chart';
 import CheckList from '../components/checkList';
 import Container from '../components/container';
-
 import client from '../lib/api';
 import { ChartData } from '../types/chart';
 
@@ -13,16 +10,15 @@ import { ChartData } from '../types/chart';
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const Home: NextPage<PageProps> = ({ result }) => {
-  // rechartsへ渡すチャードデータの配列
+  // rechartsへ渡すチャートデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
   // データ取得に失敗した都道府県の配列
   const [failures, setFailures] = useState<number[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = event.currentTarget;
-    const [prefCode, prefName] = selected.value.split(':');
-
-    const prefCodeNumber = parseInt(prefCode, 10);
+    const selected = event.currentTarget; // クリックされた要素
+    const [prefCode, prefName] = selected.value.split(':'); // valueから都道府県コードと名前を取得
+    const prefCodeNumber = parseInt(prefCode, 10); // 都道府県コードをnumber型に変換
 
     // クリックしたチェックボックスの状態によって処理を振り分ける
     if (selected.checked) {

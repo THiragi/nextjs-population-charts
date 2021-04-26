@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import Header from '../header';
-
 import styles from './index.module.scss';
 
 type Props = {

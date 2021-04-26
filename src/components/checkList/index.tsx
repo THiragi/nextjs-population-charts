@@ -1,6 +1,5 @@
 import React from 'react';
 import { Prefecture } from '../../types/prefecture';
-
 import styles from './index.module.scss';
 
 type Props = {

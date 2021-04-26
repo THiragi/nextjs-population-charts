@@ -10,15 +10,12 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-
 import assignColorCode from '../../lib/assignColorCode';
-
 import { ChartData } from '../../types/chart';
-
 import styles from './index.module.scss';
 
 // 都道府県グラフの配色の配列
-const assignColorCodeByValue = assignColorCode(210)(50)(16);
+const assignColorCodeByValue = assignColorCode(210)(50)(48);
 const colorCode = [...Array(48)].map((_, i) => assignColorCodeByValue(i));
 
 type Props = {
