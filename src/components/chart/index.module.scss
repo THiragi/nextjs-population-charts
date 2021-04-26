@@ -1,4 +1,9 @@
-.chart {
-  height: 440px;
-  margin: 4em 0;
+.outer {
+  overflow-x: scroll;
+
+  .chart {
+    min-width: 425px;
+    height: 440px;
+    margin: 4em 0;
+  }
 }

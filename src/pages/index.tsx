@@ -5,11 +5,9 @@ import { InferGetServerSidePropsType, NextPage } from 'next';
 import Chart from '../components/chart';
 import CheckList from '../components/checkList';
 import Container from '../components/container';
-import FailureAlert from '../components/failureAlert';
 
 import client from '../lib/api';
 import { ChartData } from '../types/chart';
-import { Prefecture } from '../types/prefecture';
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -18,7 +16,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すチャードデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
   // データ取得に失敗した都道府県の配列
-  const [failures, setFailures] = useState<Prefecture[]>([]);
+  const [failures, setFailures] = useState<number[]>([]);
 
   const handleCheck = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.currentTarget;
@@ -28,12 +26,6 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
     // クリックしたチェックボックスの状態によって処理を振り分ける
     if (selected.checked) {
-      // 選択した都道府県が前回データ取得に失敗していた場合、一旦失敗リストから削除
-      if (failures.find((failure) => failure.prefName === prefName)) {
-        setFailures(
-          failures.filter((failure) => failure.prefName !== prefName),
-        );
-      }
       // チェックが入った場合は、APIから人口推移データを取得し、追加する
       await fetch(`/api/population?prefCode=${prefCode}`)
         .then((res) => {
@@ -44,6 +36,12 @@ const Home: NextPage<PageProps> = ({ result }) => {
           return res.json();
         })
         .then((json) => {
+          // 選択した都道府県が前回データ取得に失敗していた場合、失敗リストから削除
+          if (failures.includes(prefCodeNumber)) {
+            setFailures(
+              failures.filter((failure) => failure !== prefCodeNumber),
+            );
+          }
           // 取得したデータをrechartsのグラフコンポーネントに渡すデータ配列に追加
           setChartData([
             ...chartData,
@@ -56,7 +54,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
         })
         .catch(() => {
           // データ取得に失敗した場合、都道府県を失敗リストへ追加
-          setFailures([...failures, { prefCode: prefCodeNumber, prefName }]);
+          setFailures([...failures, prefCodeNumber]);
         });
     } else {
       // チェックが外れた場合、その都道府県の人口推移データを削除する
@@ -70,9 +68,12 @@ const Home: NextPage<PageProps> = ({ result }) => {
       description="チェックを入れた都道府県の人口推移がチャートで表示されます"
     >
       <section>
-        <h1>都道府県一覧</h1>
-        {failures.length !== 0 && <FailureAlert failures={failures} />}
-        <CheckList result={result} handleCheck={handleCheck} />
+        <h2>都道府県一覧</h2>
+        <CheckList
+          result={result}
+          failures={failures}
+          handleCheck={handleCheck}
+        />
         <Chart chartData={chartData} />
       </section>
     </Container>

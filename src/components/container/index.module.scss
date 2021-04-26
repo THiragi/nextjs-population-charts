@@ -1,7 +1,9 @@
+@import '../../styles/variables.scss';
+
 .container {
   main {
     max-width: var(--max-width);
-    padding: 0 32px;
+    padding: 0 1em;
     margin: 0 auto;
 
     h1 {

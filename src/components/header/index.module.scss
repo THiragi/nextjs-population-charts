@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .header {
   height: 96px;
   background-color: var(--color-theme);
@@ -8,5 +10,9 @@
     color: #fff;
     text-align: center;
     vertical-align: middle;
+
+    @include mq(sm) {
+      font-size: 1.4em;
+    }
   }
 }
