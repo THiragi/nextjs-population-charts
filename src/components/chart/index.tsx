@@ -32,11 +32,19 @@ const Chart: React.VFC<Props> = ({ chartData }) => (
           <XAxis dataKey="year" type="category" allowDuplicatedCategory={false}>
             <Label value="年度" offset={35} position="right" />
           </XAxis>
-          <YAxis dataKey="value" width={80}>
-            <Label value="人口数" offset={30} position="top" />
+          <YAxis
+            type="number"
+            width={50}
+            dataKey="value"
+            tickFormatter={(tick: number) => (tick / 10000).toString()}
+          >
+            <Label value="人口数(万)" position={{ x: 80, y: -30 }} />
           </YAxis>
           <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
-          <Tooltip />
+          <Tooltip
+            labelFormatter={(label: number) => `${label}年`}
+            formatter={(value: number) => `${value.toLocaleString()}人`}
+          />
           <Legend align="right" verticalAlign="top" layout="vertical" />
           {chartData.length &&
             chartData.map((c) => (
