@@ -18,7 +18,8 @@ import { ChartData } from '../../types/chart';
 import styles from './index.module.scss';
 
 // 都道府県グラフの配色の配列
-const colorCode = [...Array(48)].map((_, i) => assignColorCode(i, 48, 210, 50));
+const assignColorCodeByValue = assignColorCode(210)(50)(16);
+const colorCode = [...Array(48)].map((_, i) => assignColorCodeByValue(i));
 
 type Props = {
   chartData: ChartData[];
