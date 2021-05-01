@@ -8,7 +8,11 @@ type Props = {
   handleCheck: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 };
 
-const CheckList: React.VFC<Props> = ({ result, failures, handleCheck }) => (
+export const CheckList: React.VFC<Props> = ({
+  result,
+  failures,
+  handleCheck,
+}) => (
   <div className={styles.checklist}>
     {failures.length !== 0 && (
       <p className={styles.alert}>
@@ -35,5 +39,3 @@ const CheckList: React.VFC<Props> = ({ result, failures, handleCheck }) => (
     </ul>
   </div>
 );
-
-export default CheckList;

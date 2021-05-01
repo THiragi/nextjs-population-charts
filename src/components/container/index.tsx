@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Header from '../header';
+import { Header } from '../header';
 import styles from './index.module.scss';
 
 type Props = {
@@ -9,7 +9,11 @@ type Props = {
   description: string;
 };
 
-const Container: React.FC<Props> = ({ children, title, description }) => (
+export const Container: React.FC<Props> = ({
+  children,
+  title,
+  description,
+}) => (
   <div className={styles.container}>
     <Head>
       <title>{title}</title>
@@ -25,5 +29,3 @@ const Container: React.FC<Props> = ({ children, title, description }) => (
     <main>{children}</main>
   </div>
 );
-
-export default Container;

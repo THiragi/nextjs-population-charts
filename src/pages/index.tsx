@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { InferGetServerSidePropsType, NextPage } from 'next';
-import Chart from '../components/chart';
-import CheckList from '../components/checkList';
-import Container from '../components/container';
-import client from '../lib/api';
+import { Chart } from '../components/chart';
+import { CheckList } from '../components/checkList';
+import { Container } from '../components/container';
+import { client } from '../lib/api';
 import { ChartData } from '../types/chart';
 
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Home: NextPage<PageProps> = ({ result }) => {
+export const Home: NextPage<PageProps> = ({ result }) => {
   // rechartsへ渡すグラフデータの配列
   const [chartData, setChartData] = useState<ChartData[]>([]);
   // データ取得に失敗した都道府県の配列
@@ -83,6 +83,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
 };
 
 // リクエスト時に都道府県一覧データを取得
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getServerSideProps = async () => {
   const { result } = await client.v1.prefectures.$get();
 

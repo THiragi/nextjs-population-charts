@@ -1,4 +1,4 @@
-import assignColorCode from './assignColorCode';
+import { assignColorCode } from './assignColorCode';
 
 /**
  * テストは、max=240、min=80、range=16を固定値として行う

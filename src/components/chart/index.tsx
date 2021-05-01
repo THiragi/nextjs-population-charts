@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import assignColorCode from '../../lib/assignColorCode';
+import { assignColorCode } from '../../lib/assignColorCode';
 import { ChartData } from '../../types/chart';
 import styles from './index.module.scss';
 
@@ -22,7 +22,7 @@ type Props = {
   chartData: ChartData[];
 };
 
-const Chart: React.VFC<Props> = ({ chartData }) => (
+export const Chart: React.VFC<Props> = ({ chartData }) => (
   <div className={styles.outer}>
     <div className={styles.chart}>
       <ResponsiveContainer>
@@ -59,5 +59,3 @@ const Chart: React.VFC<Props> = ({ chartData }) => (
     </div>
   </div>
 );
-
-export default Chart;

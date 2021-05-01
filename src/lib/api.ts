@@ -10,6 +10,4 @@ const fetchConfig: Required<Parameters<typeof aspida>>[1] = {
   },
 };
 
-const client = api(aspida(fetch, fetchConfig));
-
-export default client;
+export const client = api(aspida(fetch, fetchConfig));

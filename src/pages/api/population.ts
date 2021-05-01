@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import client from '../../lib/api';
-import toNumber from '../../lib/toNumber';
+import { client } from '../../lib/api';
+import { toNumber } from '../../lib/toNumber';
 
 // API_KEYを秘匿したいので、Next.jsのAPIルート経由で人口データを取得する
 export default async (

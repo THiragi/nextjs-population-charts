@@ -1,4 +1,4 @@
-import toNumber from './toNumber';
+import { toNumber } from './toNumber';
 
 describe(toNumber.name, () => {
   it('入力値がstring型の数字の場合、その値をnumber型に変換して返す', () => {

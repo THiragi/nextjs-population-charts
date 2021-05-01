@@ -6,9 +6,9 @@
  * @param {number} min rgbの最低値
  * @returns
  */
-const assignColorCode = (max: number) => (min: number) => (range: number) => (
-  value: number,
-): string => {
+export const assignColorCode = (max: number) => (min: number) => (
+  range: number,
+) => (value: number): string => {
   /**
    * rangeより大きい数値がvalueに渡されても、
    * rangeの数以上の色が生成されないよう調整している。
@@ -41,5 +41,3 @@ const assignColorCode = (max: number) => (min: number) => (range: number) => (
 
   return `#${low}${high}${mid}`;
 };
-
-export default assignColorCode;
