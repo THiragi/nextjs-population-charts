@@ -5,13 +5,15 @@ import styles from './index.module.scss';
 type Props = {
   result: Prefecture[];
   failures: number[];
-  handleCheck: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleClick: (code: number, name: string) => Promise<void>;
 };
 
 export const CheckList: React.VFC<Props> = ({
   result,
   failures,
-  handleCheck,
+  handleChange,
+  handleClick,
 }) => (
   <div className={styles.checklist}>
     {failures.length !== 0 && (
@@ -29,8 +31,9 @@ export const CheckList: React.VFC<Props> = ({
             <input
               id={`pref-${data.prefCode}`}
               type="checkbox"
-              value={`${data.prefCode}:${data.prefName}`}
-              onChange={handleCheck}
+              value={data.prefCode}
+              onChange={handleChange}
+              onClick={() => handleClick(data.prefCode, data.prefName)}
             />
             {data.prefName}
           </label>
