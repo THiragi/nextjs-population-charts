@@ -9,32 +9,34 @@ import { ChartData } from '../types/chart';
 // getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const Home: NextPage<PageProps> = ({ result }) => {
-  // RESAS APIから取得した人口データを貯蔵
+const Home: NextPage<PageProps> = ({ result }) => {
+  // RESAS APIから取得した人口データの配列
   const [storeData, setStoreData] = useState<ChartData[]>([]);
-  // チェックが入っているチェックボックス
+  // チェックが入っている都道府県コードの配列
   const [checkCode, setCheckCode] = useState<number[]>([]);
   // データ取得に失敗した都道府県の配列
   const [failures, setFailures] = useState<number[]>([]);
   // rechartsへ渡すグラフデータの配列
   const chartData = storeData.filter((data) => checkCode.includes(data.id));
 
-  // チェックボックスの状態のみを管理する
+  // チェックボックスの状態を管理する。
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = event.currentTarget;
-    const value = parseInt(selected.value, 10);
-    if (selected.checked) {
-      setCheckCode([...checkCode, value]);
+    const { checked, value } = event.currentTarget;
+    const prefCode = parseInt(value, 10);
+    if (checked) {
+      setCheckCode([...checkCode, prefCode]);
     } else {
-      setCheckCode(checkCode.filter((code) => code !== value));
+      setCheckCode(checkCode.filter((code) => code !== prefCode));
     }
   };
 
-  // クリックした都道府県の人口データが取得されていない場合は取得する
+  // クリックした都道府県の人口データを取得する(すでに取得されている場合は、なにもしない)
   const handleClick = async (code: number, name: string) => {
+    // クリックされた都道府県の人口データが取得されているかどうか
     const isChartData =
       storeData.filter((data) => data.id === code).length !== 0;
 
+    // 人口データが取得されていない場合は、RESAS APIからデータを取得
     if (!isChartData) {
       await fetch(`/api/population?prefCode=${code}`)
         .then((res) => {
@@ -49,7 +51,7 @@ export const Home: NextPage<PageProps> = ({ result }) => {
           if (failures.includes(code)) {
             setFailures(failures.filter((failure) => failure !== code));
           }
-          // 取得したデータをrechartsのグラフコンポーネントに渡すデータ配列に追加
+          // 取得した人口データをstoreDataに追加
           setStoreData([
             ...storeData,
             {
@@ -60,7 +62,7 @@ export const Home: NextPage<PageProps> = ({ result }) => {
           ]);
         })
         .catch(() => {
-          // データ取得に失敗した場合、都道府県を失敗リストへ追加
+          // データ取得に失敗した場合、都道府県コードを失敗リストへ追加
           setFailures([...failures, code]);
         });
     }
