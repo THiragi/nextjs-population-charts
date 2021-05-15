@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { InferGetServerSidePropsType, NextPage } from 'next';
+import { InferGetStaticPropsType, NextPage } from 'next';
 import { Chart } from '../components/chart';
 import { CheckList } from '../components/checkList';
 import { Container } from '../components/container';
 import { client } from '../lib/api';
 import { ChartData } from '../types/chart';
 
-// getServerSideからreturnされた値から、Pageに渡されるPropsの型を類推
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+// getStaticからreturnされた値から、Pageに渡されるPropsの型を類推
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<PageProps> = ({ result }) => {
   // RESAS APIから取得した人口データの配列
@@ -89,7 +89,7 @@ const Home: NextPage<PageProps> = ({ result }) => {
 
 // リクエスト時に都道府県一覧データを取得
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const { result } = await client.v1.prefectures.$get();
 
   return {
