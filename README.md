@@ -3,10 +3,10 @@
 # 都道府県別総人口推移グラフ
 
 [RESAS API](https://opendata.resas-portal.go.jp/)から取得した都道府県別の総人口推移をグラフで表示するアプリです。
+
 （とある企業の選考課題として作成しました）
 
-↓こちらで実際に動くアプリを操作できます。
-https://nextjs-population-charts.vercel.app/
+こちらで実際に動くアプリを操作できます。→　https://nextjs-population-charts.vercel.app/
 
 ## ローカル環境で動かす場合
 
