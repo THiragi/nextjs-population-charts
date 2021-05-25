@@ -30,6 +30,7 @@ npm run test
 ローカル環境で動かす場合は以下の環境変数を設定してください。
 
 `RESAS_API_ENDPOINT`: RESAS APIのエンドポイント(https://opendata.resas-portal.go.jp/api/);
+
 `RESAS_API_KEY`: RESAS APIのAPIキー(独自に登録して取得したものを使用してください)
 
 
